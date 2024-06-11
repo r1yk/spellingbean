@@ -5,12 +5,10 @@
   "version": "1.0",
   "action": {
     "default_popup": "pages/popup.html",
-    "default_icon": "bee.png"
+    "default_icon": "bean.png"
   },
-  "content_scripts": [
-    {
-      "js": ["scripts/load.js"],
-      "matches": ["https://www.nytimes.com/puzzles/spelling-bee*"]
-    }
-  ]
+  "background": {
+    "service_worker": "scripts/service-worker.js"
+  },
+  "permissions": ["webNavigation"]
 }

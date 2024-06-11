@@ -32,3 +32,5 @@ window.addEventListener(
   },
   false
 );
+
+console.log("SIDE PANEL", chrome);
