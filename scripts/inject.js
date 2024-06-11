@@ -41,7 +41,7 @@ window.addEventListener(
     if (event.data.type && event.data.type === "TOGGLE_BEAN") {
       chrome.runtime.sendMessage("TOGGLE_BEAN");
     } else if (event.data.type && event.data.type === "GAME_DATA") {
-      chrome.runtime.sendMessage({ gameData: JSON.parse(event.data.text) });
+      chrome.runtime.sendMessage(JSON.parse(event.data.text));
     }
   },
   false
