@@ -10,5 +10,23 @@
   "background": {
     "service_worker": "scripts/service-worker.js"
   },
-  "permissions": ["webNavigation"]
+  "permissions": ["webNavigation", "scripting"],
+  "host_permissions": ["https://www.nytimes.com/puzzles/*"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.nytimes.com/puzzles/*"],
+      "js": ["/scripts/inject.js"],
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["bean.png"],
+      "matches": ["https://www.nytimes.com/*"]
+    },
+    {
+      "resources": ["/scripts/on-page-load.js"],
+      "matches": ["https://www.nytimes.com/*"]
+    }
+  ]
 }
