@@ -6,5 +6,11 @@
   "action": {
     "default_popup": "pages/popup.html",
     "default_icon": "bee.png"
-  }
+  },
+  "content_scripts": [
+    {
+      "js": ["scripts/load.js"],
+      "matches": ["https://www.nytimes.com/puzzles/spelling-bee*"]
+    }
+  ]
 }
