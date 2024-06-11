@@ -28,5 +28,8 @@
       "resources": ["/scripts/on-page-load.js"],
       "matches": ["https://www.nytimes.com/*"]
     }
-  ]
+  ],
+  "externally_connectable": {
+    "matches": ["https://www.nytimes.com/*"]
+  }
 }
