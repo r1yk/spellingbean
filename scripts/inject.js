@@ -1,21 +1,19 @@
 function injectScript(file_path, tag) {
   // Add the clickable icon that will open the side panel
-  header = document.getElementById("portal-game-header");
-
-  beanbagContainer = document.createElement("div");
-  beanbagContainer.setAttribute("id", "spelling-bean-container");
-  beanbagContainer.setAttribute("class", "hive-action");
-  beanbagContainer.setAttribute("style", "margin-left: auto");
+  controls = document.querySelector(".sb-controls");
 
   beanbagIcon = document.createElement("img");
   beanbagIcon.setAttribute("src", chrome.runtime.getURL("bean.png"));
-  beanbagContainer.appendChild(beanbagIcon);
-  beanbagContainer.addEventListener("click", () => {
+  beanbagIcon.setAttribute("height", 128);
+  beanbagIcon.setAttribute("width", 128);
+  beanbagIcon.setAttribute("style", "cursor: pointer");
+
+  beanbagIcon.addEventListener("click", () => {
     window.postMessage({ type: "TOGGLE_BEAN" });
   });
 
-  if (header) {
-    header.appendChild(beanbagContainer);
+  if (controls) {
+    controls.prepend(beanbagIcon);
   }
 
   // Inject the script that will be able to read window.gameData and post it back to the extension
@@ -28,8 +26,7 @@ function injectScript(file_path, tag) {
 
 injectScript(chrome.runtime.getURL("scripts/on-page-load.js"), "body");
 
-// var port = chrome.runtime.connect();
-
+// Forward window events to the extension via `chrome.runtime.sendMessage`
 window.addEventListener(
   "message",
   (event) => {
