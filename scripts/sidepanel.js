@@ -11,7 +11,10 @@ async function renderHintsAndAnswers() {
   renderAnswers(spellingBeanAnswers, spellingBeanSubmitted);
 }
 
-function renderHints(answers, submitted) {}
+function renderHints(answers, submitted) {
+  const answersSummary = getWordsSummary(answers);
+  const submittedSummary = getWordsSummary(submitted);
+}
 
 function renderAnswers(answers, submitted) {
   const answersTableMissing = document.getElementById("answers-table-missing");
@@ -108,3 +111,31 @@ chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
     await renderHintsAndAnswers();
   }
 });
+
+function getWordsSummary(words) {
+  const wordLengths = new Set();
+  const startingLetters = new Set();
+
+  const firstLetterLengthCounts = {};
+  const twoLetterCounts = {};
+
+  for (const word of words) {
+    const startingLetter = word.charAt(0);
+    startingLetters.add(startingLetter);
+    wordLengths.add(word.length);
+
+    const firstAndLength = `${startingLetter}${word.length}`;
+    firstLetterLengthCounts[firstAndLength] =
+      (firstLetterLengthCounts[firstAndLength] || 0) + 1;
+
+    startingTwo = word.slice(0, 2);
+    twoLetterCounts[startingTwo] = (twoLetterCounts[startingTwo] || 0) + 1;
+  }
+
+  return {
+    wordLengths,
+    startingLetters,
+    firstLetterLengthCounts,
+    twoLetterCounts,
+  };
+}

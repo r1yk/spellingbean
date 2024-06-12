@@ -43,6 +43,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       spellingBeanAnswers: request.spellingBeanData.answers,
       spellingBeanSubmitted: request.spellingBeanData.submitted,
       spellingBeanPuzzleDate: request.spellingBeanData.puzzleDate,
+      spellingBeanRevealed: false,
     });
   }
 });
@@ -54,7 +55,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     const utf8decoder = new TextDecoder();
     puzzleJson = JSON.parse(utf8decoder.decode(intarray));
 
-    // Make sure we can ignore requests that are actually related to other puzzles (?) Why you do this NYT
+    // Make sure we can ignore requests that are actually related to other puzzle dates(?) Why you do this NYT
     const { spellingBeanPuzzleDate } = await chrome.storage.session.get(
       "spellingBeanPuzzleDate"
     );
