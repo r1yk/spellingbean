@@ -4,11 +4,17 @@ const SPELLING_BEE = "https://www.nytimes.com/puzzles/spelling-bee";
 chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
   if (!tab.url) return;
 
-  if (tab.url === SPELLING_BEE) {
+  if (tab.url.startsWith(SPELLING_BEE)) {
     await chrome.sidePanel.setOptions({
       tabId,
       path: "pages/sidepanel.html",
       enabled: true,
+    });
+  } else {
+    await chrome.sidePanel.setOptions({
+      tabId,
+      path: "pages/sidepanel.html",
+      enabled: false,
     });
   }
 });
@@ -16,7 +22,7 @@ chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
 // Disable side panel for all other tabs
 chrome.tabs.onActivated.addListener(async ({ tabId }) => {
   tab = await chrome.tabs.get(tabId);
-  if (tab?.url !== SPELLING_BEE) {
+  if (tab.url && !tab.url.startsWith(SPELLING_BEE)) {
     await chrome.sidePanel.setOptions({
       tabId,
       path: "pages/sidepanel.html",
