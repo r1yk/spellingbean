@@ -10,7 +10,7 @@
   "background": {
     "service_worker": "scripts/service-worker.js"
   },
-  "permissions": ["webNavigation", "scripting"],
+  "permissions": ["webNavigation", "scripting", "sidePanel"],
   "host_permissions": ["https://www.nytimes.com/puzzles/*"],
   "content_scripts": [
     {
@@ -31,5 +31,8 @@
   ],
   "externally_connectable": {
     "matches": ["https://www.nytimes.com/*"]
+  },
+  "side_panel": {
+    "default_path": "pages/sidepanel.html"
   }
 }

@@ -1,6 +1,11 @@
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request === "TOGGLE_BEAN") {
-    console.log("TOGGLE");
+    chrome.sidePanel.open({ tabId: sender.tab.id });
+    chrome.sidePanel.setOptions({
+      tabId: sender.tab.id,
+      path: "pages/sidepanel.html",
+      enabled: true,
+    });
   }
   if (request.gameData) {
     console.log("GAME DATA", request);
