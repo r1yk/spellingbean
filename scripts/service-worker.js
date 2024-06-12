@@ -42,16 +42,30 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     await chrome.storage.session.set({
       spellingBeanAnswers: request.spellingBeanData.answers,
       spellingBeanSubmitted: request.spellingBeanData.submitted,
+      spellingBeanPuzzleDate: request.spellingBeanData.puzzleDate,
     });
   }
 });
 
 // Listen for state updates so that the list of submitted words can be kept current
 chrome.webRequest.onBeforeRequest.addListener(
-  (details) => {
+  async (details) => {
     const intarray = new Int8Array(details.requestBody.raw[0].bytes);
     const utf8decoder = new TextDecoder();
-    console.log(JSON.parse(utf8decoder.decode(intarray)));
+    puzzleJson = JSON.parse(utf8decoder.decode(intarray));
+
+    // Make sure we can ignore requests that are actually related to other puzzles (?) Why you do this NYT
+    const { spellingBeanPuzzleDate } = await chrome.storage.session.get(
+      "spellingBeanPuzzleDate"
+    );
+    if (
+      puzzleJson.game === "spelling_bee" &&
+      puzzleJson.print_date === spellingBeanPuzzleDate
+    ) {
+      await chrome.storage.session.set({
+        spellingBeanSubmitted: puzzleJson.game_data.answers,
+      });
+    }
   },
   {
     urls: ["https://www.nytimes.com/svc/games/state"],

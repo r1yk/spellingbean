@@ -11,6 +11,7 @@ setTimeout(() => {
       spellingBeanData: {
         answers: window.gameData.today.answers,
         submitted: alreadySubmittedWords,
+        puzzleDate: window.gameData.today.printDate,
       },
     }),
   });
