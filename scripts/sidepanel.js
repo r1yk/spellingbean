@@ -1,11 +1,11 @@
 console.log("SIDE PANEL JS");
 
 async function renderHintsAndAnswers() {
-  data = await chrome.storage.session.get([
-    "spellingBeanAnswers",
-    "spellingBeanSubmitted",
-  ]);
-  const { spellingBeanAnswers, spellingBeanSubmitted } = data;
+  const { spellingBeanAnswers, spellingBeanSubmitted } =
+    await chrome.storage.session.get([
+      "spellingBeanAnswers",
+      "spellingBeanSubmitted",
+    ]);
 
   renderHints(spellingBeanAnswers, spellingBeanSubmitted);
   renderAnswers(spellingBeanAnswers, spellingBeanSubmitted);
@@ -17,8 +17,9 @@ function renderAnswers(answers, submitted) {
   const answersTableMissing = document.getElementById("answers-table-missing");
   const answersTable = document.getElementById("answers-table");
 
-  rowsMissing = [];
-  rowsAll = [];
+  const rowsMissing = [];
+  const rowsAll = [];
+
   answers.forEach((answer) => {
     row = document.createElement("tr");
     answerCell = document.createElement("td");
@@ -99,3 +100,11 @@ biggerHintsButton.addEventListener("click", showBiggerHints);
 
 answersButton = document.getElementById("reveal-answers-button");
 answersButton.addEventListener("click", showAnswers);
+
+// Listen to changes to the user's submitted answers so that the hints and answers can be re-rendered
+chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
+  const { spellingBeanSubmitted } = changes;
+  if (spellingBeanSubmitted) {
+    await renderHintsAndAnswers();
+  }
+});
