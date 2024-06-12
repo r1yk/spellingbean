@@ -14,6 +14,65 @@ async function renderHintsAndAnswers() {
 function renderHints(answers, submitted) {
   const answersSummary = getWordsSummary(answers);
   const submittedSummary = getWordsSummary(submitted);
+
+  const hintsTable = document.getElementById("hints-table");
+
+  const wordLengths = Array.from(answersSummary.wordLengths.keys()).sort(
+    (a, b) => a - b
+  );
+  const startingLetters = Array.from(
+    answersSummary.startingLetters.keys()
+  ).sort();
+
+  const hintsRows = [];
+
+  const header = document.createElement("tr");
+  header.append(document.createElement("th"));
+  wordLengths.forEach((wordLength) => {
+    const cell = document.createElement("th");
+    cell.innerText = wordLength;
+    header.append(cell);
+  });
+  hintsRows.push(header);
+
+  startingLetters.forEach((startingLetter) => {
+    const row = document.createElement("tr");
+    const letterCell = document.createElement("th");
+    letterCell.innerText = startingLetter.toUpperCase();
+    row.append(letterCell);
+
+    wordLengths.forEach((wordLength) => {
+      const lengthCountForLetter =
+        answersSummary.firstLetterLengthCounts[
+          `${startingLetter}${wordLength}`
+        ];
+
+      const cell = document.createElement("td");
+
+      if (lengthCountForLetter) {
+        const lengthCountForLetterSubmitted =
+          submittedSummary.firstLetterLengthCounts[
+            `${startingLetter}${wordLength}`
+          ] || 0;
+
+        const remaining = lengthCountForLetter - lengthCountForLetterSubmitted;
+
+        if (remaining === 0) {
+          cell.setAttribute("class", "hints-complete");
+        } else if (remaining < lengthCountForLetter) {
+          cell.setAttribute("class", "hints-progress");
+        } else {
+          cell.setAttribute("class", "hints-missing");
+        }
+
+        cell.innerText = `${lengthCountForLetterSubmitted}/${lengthCountForLetter}`;
+      }
+      row.append(cell);
+    });
+
+    hintsRows.push(row);
+  });
+  hintsTable.replaceChildren(...hintsRows);
 }
 
 function renderAnswers(answers, submitted) {

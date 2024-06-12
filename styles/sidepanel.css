@@ -31,6 +31,31 @@ body {
     justify-content: space-around;
 }
 
+.hints-table {
+    width: 100%;
+    text-align: center;
+}
+
+.hints-table td {
+    border-radius: 5px;
+    padding: 10px;
+    font-size: smaller;
+}
+
+.hints-table th {
+  padding: 10px;
+}
+
+.hints-missing {
+    background-color: rgb(240, 184, 174);
+}
+.hints-progress {
+    background-color: rgb(234, 213, 162);
+}
+.hints-complete {
+    background-color: rgb(119, 185, 119)
+}
+
 
 .answers-table {
     border-collapse: collapse;
