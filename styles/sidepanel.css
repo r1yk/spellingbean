@@ -1,6 +1,11 @@
 body {
     color: #2c2c2c
 }
+
+#main-content {
+    padding: 20px;
+}
+
 .panel-header {
     display: flex;
     flex-direction: row;

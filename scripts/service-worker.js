@@ -31,6 +31,9 @@ chrome.tabs.onActivated.addListener(async ({ tabId }) => {
   }
 });
 
+// Handle messages coming from the host page, including:
+//   - Clicks on the beanbag to open the side panel
+//   - Receiving the game data upon page load
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   if (request === "TOGGLE_BEAN") {
     await chrome.sidePanel.open({ tabId: sender.tab.id });
@@ -42,3 +45,16 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
     });
   }
 });
+
+// Listen for state updates so that the list of submitted words can be kept current
+chrome.webRequest.onBeforeRequest.addListener(
+  (details) => {
+    const intarray = new Int8Array(details.requestBody.raw[0].bytes);
+    const utf8decoder = new TextDecoder();
+    console.log(JSON.parse(utf8decoder.decode(intarray)));
+  },
+  {
+    urls: ["https://www.nytimes.com/svc/games/state"],
+  },
+  ["requestBody"]
+);
