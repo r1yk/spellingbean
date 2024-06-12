@@ -1,6 +1,6 @@
 const SPELLING_BEE = "https://www.nytimes.com/puzzles/spelling-bee";
 
-// Only side panel when a tab turns out to be Spelling Bee:
+// Only enable side panel when a tab turns out to be Spelling Bee:
 chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
   if (!tab.url) return;
 
@@ -31,11 +31,14 @@ chrome.tabs.onActivated.addListener(async ({ tabId }) => {
   }
 });
 
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   if (request === "TOGGLE_BEAN") {
-    chrome.sidePanel.open({ tabId: sender.tab.id });
+    await chrome.sidePanel.open({ tabId: sender.tab.id });
   }
-  if (request.gameData) {
-    console.log("GAME DATA", request);
+  if (request.spellingBeanData) {
+    await chrome.storage.session.set({
+      spellingBeanAnswers: request.spellingBeanData.answers,
+      spellingBeanSubmitted: request.spellingBeanData.submitted,
+    });
   }
 });

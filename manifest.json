@@ -10,7 +10,7 @@
   "background": {
     "service_worker": "scripts/service-worker.js"
   },
-  "permissions": ["webNavigation", "scripting", "sidePanel", "tabs"],
+  "permissions": ["webNavigation", "scripting", "sidePanel", "storage", "tabs"],
   "host_permissions": ["https://www.nytimes.com/puzzles/*"],
   "content_scripts": [
     {

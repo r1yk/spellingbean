@@ -8,8 +8,10 @@ setTimeout(() => {
   window.postMessage({
     type: "GAME_DATA",
     text: JSON.stringify({
-      gameData: window.gameData,
-      alreadySubmitted: alreadySubmittedWords,
+      spellingBeanData: {
+        answers: window.gameData.today.answers,
+        submitted: alreadySubmittedWords,
+      },
     }),
   });
 }, 1000);
