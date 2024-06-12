@@ -26,10 +26,26 @@ body {
     justify-content: space-around;
 }
 
-.answers {
-    padding: 30px;
-}
 
 .answers-table {
     border-collapse: collapse;
+    text-transform: capitalize;
+    width: 100%;
+}
+
+.answers-table td {
+    padding: 10px;
+}
+
+.answers-table a {
+    text-transform: none;
+}
+
+
+.hidden {
+    display: none;
+}
+
+.shown {
+    display: block;
 }
