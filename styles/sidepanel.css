@@ -1,19 +1,29 @@
 body {
-    color: #2c2c2c
+    background-color: #2c2c2c;
+    color: #eeeeee;
+    font-family: monospace;
+}
+
+button {
+
 }
 
 #main-content {
-    padding: 20px;
+    padding: 10px;
+    font-family: monospace;
 }
 
 .panel-header {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-bottom: 15px;
 }
 
 .panel-button {
-    background: none;
+    font-family: monospace;
+    background-color: #eeeeee;
+    color: #2c2c2c;
     border: 1px solid #dcdcdc;
     border-radius: 2.5em;
     padding: 15px;
@@ -40,17 +50,20 @@ body {
     border-radius: 5px;
     padding: 10px;
     font-size: smaller;
+    color: #2c2c2c;
+
 }
 
 .hints-table th {
   padding: 10px;
+  font-size: larger;
 }
 
 .hints-missing {
-    background-color: rgb(240, 184, 174);
+    background-color: rgb(212 136 122);
 }
 .hints-progress {
-    background-color: rgb(234, 213, 162);
+    background-color: rgb(230, 195, 110);
 }
 .hints-complete {
     background-color: rgb(119, 185, 119)
@@ -78,4 +91,26 @@ body {
 
 .shown {
     display: block;
+}
+
+#two-letter-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    text-align: center;
+    padding: 10px;
+}
+
+.two-letter-box {
+    padding: 15px;
+    border-radius: 5px;
+    margin: 2px;
+    color: #2c2c2c
+}
+
+.two-letter-text {
+    font-family: monospace;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: large;
 }

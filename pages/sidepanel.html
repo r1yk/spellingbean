@@ -7,27 +7,31 @@
       <img src="../bean.png" height="50" width="50" />
       <h1>Spelling Bean</h1>
     </div>
+    <div class="button-row">
+      <button id="hints-button" class="panel-button">Hints</button>
+      <button id="bigger-hints-button" class="panel-button">
+        Bigger Hints
+      </button>
+      <button id="reveal-answers-button" class="panel-button">Answers</button>
+    </div>
+    <div id="main-content">
+      <div class="hints hidden" id="hints-container">
+        <h2>Word length by letter</h2>
+        <table class="hints-table" id="hints-table"></table>
+        <h2>Two letter list</h2>
+        <div id="two-letter-container"></div>
+      </div>
+      <div class="bigger-hints hidden" id="bigger-hints-container">
+        <h2>Bigger Hints</h2>
+      </div>
+      <div class="answers hidden" id="answers-container">
+        <h2>Missing Words</h2>
+        <table class="answers-table" id="answers-table-missing"></table>
+        <h2>All Answers</h2>
+        <table class="answers-table" id="answers-table"></table>
+      </div>
+    </div>
   </body>
-  <div class="button-row">
-    <button id="hints-button" class="panel-button">Hints</button>
-    <button id="bigger-hints-button" class="panel-button">Bigger Hints</button>
-    <button id="reveal-answers-button" class="panel-button">Answers</button>
-  </div>
-  <div id="main-content">
-    <div class="hints hidden" id="hints-container">
-      <h2>Hints</h2>
-      <table class="hints-table" id="hints-table"></table>
-    </div>
-    <div class="bigger-hints hidden" id="bigger-hints-container">
-      <h2>Bigger Hints</h2>
-    </div>
-    <div class="answers hidden" id="answers-container">
-      <h2>Missing Words</h2>
-      <table class="answers-table" id="answers-table-missing"></table>
-      <h2>All Answers</h2>
-      <table class="answers-table" id="answers-table"></table>
-    </div>
-  </div>
 
   <script src="../scripts/sidepanel.js"></script>
 </html>

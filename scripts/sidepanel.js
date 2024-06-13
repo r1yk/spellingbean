@@ -23,6 +23,9 @@ function renderHints(answers, submitted) {
   const startingLetters = Array.from(
     answersSummary.startingLetters.keys()
   ).sort();
+  const twoLetterStarts = Array.from(
+    Object.keys(answersSummary.twoLetterCounts)
+  ).sort();
 
   const hintsRows = [];
 
@@ -73,6 +76,37 @@ function renderHints(answers, submitted) {
     hintsRows.push(row);
   });
   hintsTable.replaceChildren(...hintsRows);
+
+  const twoLetterContainer = document.getElementById("two-letter-container");
+  const twoLetterBoxes = [];
+  twoLetterStarts.forEach((twoLetters) => {
+    const twoLetterBox = document.createElement("div");
+    const letters = document.createElement("div");
+    letters.setAttribute("class", "two-letter-text");
+    letters.innerText = twoLetters;
+    twoLetterBox.append(letters);
+
+    const counts = document.createElement("span");
+    const submittedCount = submittedSummary.twoLetterCounts[twoLetters] || 0;
+    const totalCount = answersSummary.twoLetterCounts[twoLetters];
+    const remaining = totalCount - submittedCount;
+
+    counts.innerText = `${submittedCount}/${totalCount}`;
+    twoLetterBox.append(counts);
+
+    let progressClass;
+    if (remaining === 0) {
+      progressClass = "hints-complete";
+    } else if (remaining < totalCount) {
+      progressClass = "hints-progress";
+    } else {
+      progressClass = "hints-missing";
+    }
+
+    twoLetterBox.setAttribute("class", `two-letter-box ${progressClass}`);
+    twoLetterBoxes.push(twoLetterBox);
+  });
+  twoLetterContainer.replaceChildren(...twoLetterBoxes);
 }
 
 function renderAnswers(answers, submitted) {
