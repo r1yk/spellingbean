@@ -133,7 +133,7 @@ function renderAnswers(answers, submitted) {
     definitionCell.append(definitionLink);
 
     row.append(answerCell);
-    row.append(definitionCell);
+    // row.append(definitionCell);
 
     if (!submitted.includes(answer)) {
       rowsMissing.push(row);
