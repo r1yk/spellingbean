@@ -22,6 +22,44 @@
       </div>
       <div class="bigger-hints hidden" id="bigger-hints-container">
         <h2>Bigger Hints</h2>
+        <form id="bigger-hints-form">
+          <label class="label-block" for="letter-count"
+            >Reveal how many letters?</label
+          >
+          <input
+            type="number"
+            id="letter-count"
+            name="letter-count"
+            min="1"
+            max="10"
+            value="3"
+          />
+          <legend>Reveal which letters?</legend>
+          <input
+            type="radio"
+            name="hint-type"
+            id="first-letters"
+            value="first-letters"
+            checked
+          />
+          <label for="first-letters">First letters</label>
+
+          <input
+            type="radio"
+            name="hint-type"
+            id="first-last-letters"
+            value="first-last-letters"
+          />
+          <label for="first-last-letters">First & last letters</label>
+          <input
+            type="radio"
+            name="hint-type"
+            id="random-letters"
+            value="random-letters"
+          />
+          <label for="random-letters">Random letters</label>
+          <input type="submit" value="Generate" />
+        </form>
       </div>
       <div class="answers hidden" id="answers-container">
         <h2>Missing Words</h2>
