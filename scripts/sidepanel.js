@@ -1,5 +1,3 @@
-console.log("SIDE PANEL JS");
-
 async function renderHintsAndAnswers() {
   const { spellingBeanAnswers, spellingBeanSubmitted } =
     await chrome.storage.session.get([

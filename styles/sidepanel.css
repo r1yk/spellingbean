@@ -4,7 +4,6 @@ body {
     font-family: monospace;
 }
 
-
 #main-content {
     padding: 10px;
     font-family: monospace;
@@ -36,6 +35,7 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    flex-grow: 1;
 }
 
 .hints-table {
