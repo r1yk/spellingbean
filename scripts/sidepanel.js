@@ -1,11 +1,13 @@
 async function renderHintsAndAnswers() {
-  const { spellingBeanAnswers, spellingBeanSubmitted } =
+  const { spellingBeanAnswers, spellingBeanSubmitted, spellingBeanHintWord } =
     await chrome.storage.session.get([
       "spellingBeanAnswers",
       "spellingBeanSubmitted",
+      "spellingBeanHintWord",
     ]);
 
   renderHints(spellingBeanAnswers, spellingBeanSubmitted);
+  renderBiggerHints(spellingBeanHintWord, spellingBeanSubmitted);
   renderAnswers(spellingBeanAnswers, spellingBeanSubmitted);
 }
 
@@ -107,6 +109,12 @@ function renderHints(answers, submitted) {
   twoLetterContainer.replaceChildren(...twoLetterBoxes);
 }
 
+function renderBiggerHints(hintWord, submitted) {
+  if (hintWord && submitted && submitted.includes(hintWord)) {
+    // Update the hint word display to show success!
+  }
+}
+
 function renderAnswers(answers, submitted) {
   const answersTableMissing = document.getElementById("answers-table-missing");
   const answersTable = document.getElementById("answers-table");
@@ -186,14 +194,83 @@ function showBiggerHints() {
   answers.setAttribute("class", "answers hidden");
 }
 
-hintsButton = document.getElementById("hints-button");
+const hintsButton = document.getElementById("hints-button");
 hintsButton.addEventListener("click", showHints);
 
-biggerHintsButton = document.getElementById("bigger-hints-button");
+const biggerHintsButton = document.getElementById("bigger-hints-button");
 biggerHintsButton.addEventListener("click", showBiggerHints);
 
-answersButton = document.getElementById("reveal-answers-button");
+const answersButton = document.getElementById("reveal-answers-button");
 answersButton.addEventListener("click", showAnswers);
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+async function createBigHint(letterCount, hintType) {
+  const { spellingBeanAnswers, spellingBeanSubmitted } =
+    await chrome.storage.session.get({
+      spellingBeanAnswers: [],
+      spellingBeanSubmitted: [],
+    });
+
+  const hintableWords = spellingBeanAnswers.filter(
+    (answer) =>
+      !spellingBeanSubmitted.includes(answer) && answer.length > letterCount
+  );
+  if (hintableWords.length === 0) {
+    return;
+  }
+  const hintWord = hintableWords[getRandomInt(hintableWords.length)];
+  await chrome.storage.session.set({ spellingBeanHintWord: hintWord });
+
+  if (hintType === "first-letters") {
+    return [
+      ...Array.from(hintWord).slice(0, letterCount),
+      ...Array(hintWord.length - letterCount).fill("_"),
+    ];
+  } else if (hintType === "first-last-letters") {
+    firstGroupSize = Math.round(letterCount / 2);
+    lastGroupSize = letterCount - firstGroupSize;
+    return [
+      ...Array.from(hintWord).slice(0, firstGroupSize),
+      ...Array(hintWord.length - letterCount).fill("_"),
+      ...Array.from(hintWord).slice(
+        hintWord.length - lastGroupSize,
+        hintWord.length
+      ),
+    ];
+  } else if (hintType === "random-letters") {
+    const indices = new Set();
+    while (indices.size < letterCount) {
+      indices.add(getRandomInt(hintWord.length));
+    }
+    const hint = [];
+    for (let i = 0; i < hintWord.length; i++) {
+      hint.push(indices.has(i) ? hintWord.charAt(i) : "_");
+    }
+    return hint;
+  }
+}
+
+const biggerHintsForm = document.getElementById("bigger-hints-form");
+biggerHintsForm.addEventListener("submit", async (submitEvent) => {
+  submitEvent.preventDefault();
+  const formData = new FormData(biggerHintsForm);
+  const letterCount = formData.get("letter-count");
+  const hintType = formData.get("hint-type");
+
+  const hint = await createBigHint(letterCount, hintType);
+  if (hint) {
+    const hintRow = document.getElementById("bigger-hint-row");
+    const hintBoxes = hint.map((hintChar) => {
+      hintCharElement = document.createElement("span");
+      hintCharElement.innerText = hintChar;
+      return hintCharElement;
+    });
+    hintRow.replaceChildren(...hintBoxes);
+  }
+});
 
 // Listen to changes to the user's submitted answers so that the hints and answers can be re-rendered
 chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
