@@ -1,14 +1,11 @@
 body {
     background-color: #2c2c2c;
     color: #eeeeee;
-    font-family: monospace;
 }
 
 #main-content {
     padding: 10px;
-    font-family: monospace;
 }
-
 
 .label-block {
     display: block;
@@ -18,11 +15,9 @@ body {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-bottom: 15px;
 }
 
 .panel-button {
-    font-family: monospace;
     background-color: #eeeeee;
     color: #2c2c2c;
     border: 1px solid #dcdcdc;
@@ -71,20 +66,15 @@ body {
 }
 
 
-.answers-table {
-    border-collapse: collapse;
-    text-transform: capitalize;
-    width: 100%;
+.answers-list {
+    column-count: 3;
+    text-transform: uppercase;
+    font-size: larger;
 }
 
-.answers-table td {
+.answers-list > div {
     padding: 10px;
 }
-
-.answers-table a {
-    text-transform: none;
-}
-
 
 .hidden {
     display: none;
@@ -113,7 +103,7 @@ body {
     font-family: monospace;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: large;
+    font-size: x-large;
 }
 
 #bigger-hint-row {
@@ -123,4 +113,29 @@ body {
     text-transform: uppercase;
     font-size: xx-large;
     font-weight: bold;
+    transition: opacity 0.5s 0.5s ease-in;
+}
+
+.answer {
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 5px;
+    border-bottom: 1px solid #494949;
+    transition: all 0.2s;
+}
+.answer:hover, .answer:focus {
+    background:#494949;
+    cursor: pointer;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.bigger-hint-solved {
+    color: rgb(119, 185, 119);
+    opacity: 0%;
 }

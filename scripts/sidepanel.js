@@ -112,43 +112,46 @@ function renderHints(answers, submitted) {
 function renderBiggerHints(hintWord, submitted) {
   if (hintWord && submitted && submitted.includes(hintWord)) {
     // Update the hint word display to show success!
+    replaceHintContent(Array.from(hintWord));
+    const hintRow = document.getElementById("bigger-hint-row");
+    hintRow.classList.toggle("bigger-hint-solved");
+    setTimeout(() => {
+      hintRow.classList.toggle("bigger-hint-solved");
+      replaceHintContent([]);
+    }, 2500);
   }
 }
 
 function renderAnswers(answers, submitted) {
-  const answersTableMissing = document.getElementById("answers-table-missing");
-  const answersTable = document.getElementById("answers-table");
+  const answersListMissing = document.getElementById("answers-list-missing");
+  const answersList = document.getElementById("answers-list-found");
 
   const rowsMissing = [];
   const rowsAll = [];
 
   answers.forEach((answer) => {
-    row = document.createElement("tr");
-    answerCell = document.createElement("td");
-    answerCell.innerText = answer;
-
-    definitionCell = document.createElement("td");
-    definitionLink = document.createElement("a");
-    definitionLink.innerText = "(definition)";
-    definitionLink.setAttribute(
+    const answerLink = document.createElement("a");
+    answerLink.setAttribute(
       "href",
       `https://www.oed.com/search/dictionary/?scope=Entries&q=${answer}`
     );
-    definitionLink.setAttribute("target", "_blank");
-    definitionLink.setAttribute("rel", "noopener noreferrer");
-    definitionCell.append(definitionLink);
+    answerLink.setAttribute("target", "_blank");
+    answerLink.setAttribute("rel", "noopener noreferer");
 
-    row.append(answerCell);
-    // row.append(definitionCell);
+    const answerDiv = document.createElement("div");
+    answerDiv.classList.add("answer");
+    answerDiv.innerText = answer;
+    answerLink.append(answerDiv);
 
     if (!submitted.includes(answer)) {
-      rowsMissing.push(row);
+      rowsMissing.push(answerLink);
+    } else {
+      rowsAll.push(answerLink);
     }
-    rowsAll.push(row.cloneNode(true));
   });
 
-  answersTableMissing.replaceChildren(...rowsMissing);
-  answersTable.replaceChildren(...rowsAll);
+  answersListMissing.replaceChildren(...rowsMissing);
+  answersList.replaceChildren(...rowsAll);
 }
 
 renderHintsAndAnswers();
@@ -235,10 +238,7 @@ async function createBigHint(letterCount, hintType) {
     return [
       ...Array.from(hintWord).slice(0, firstGroupSize),
       ...Array(hintWord.length - letterCount).fill("_"),
-      ...Array.from(hintWord).slice(
-        hintWord.length - lastGroupSize,
-        hintWord.length
-      ),
+      ...Array.from(hintWord).slice(hintWord.length - lastGroupSize),
     ];
   } else if (hintType === "random-letters") {
     const indices = new Set();
@@ -253,14 +253,7 @@ async function createBigHint(letterCount, hintType) {
   }
 }
 
-const biggerHintsForm = document.getElementById("bigger-hints-form");
-biggerHintsForm.addEventListener("submit", async (submitEvent) => {
-  submitEvent.preventDefault();
-  const formData = new FormData(biggerHintsForm);
-  const letterCount = formData.get("letter-count");
-  const hintType = formData.get("hint-type");
-
-  const hint = await createBigHint(letterCount, hintType);
+function replaceHintContent(hint) {
   if (hint) {
     const hintRow = document.getElementById("bigger-hint-row");
     const hintBoxes = hint.map((hintChar) => {
@@ -270,6 +263,17 @@ biggerHintsForm.addEventListener("submit", async (submitEvent) => {
     });
     hintRow.replaceChildren(...hintBoxes);
   }
+}
+
+const biggerHintsForm = document.getElementById("bigger-hints-form");
+biggerHintsForm.addEventListener("submit", async (submitEvent) => {
+  submitEvent.preventDefault();
+  const formData = new FormData(biggerHintsForm);
+  const letterCount = formData.get("letter-count");
+  const hintType = formData.get("hint-type");
+
+  const hint = await createBigHint(letterCount, hintType);
+  replaceHintContent(hint);
 });
 
 // Listen to changes to the user's submitted answers so that the hints and answers can be re-rendered
