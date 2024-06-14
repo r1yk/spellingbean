@@ -9,7 +9,31 @@ body {
 
 .label-block {
     display: block;
+    margin-bottom: 10px;
 }
+
+.field-container {
+    padding: 10px;
+    font-size: larger;
+
+}
+
+input[type="number"] {
+    all: unset;
+    padding: 10px;
+    border:1px solid #494949;
+    border-radius: 5px;
+
+}
+
+.unset-styles {
+    all: unset;
+}
+
+/* input[type="submit"] {
+    all: unset;
+} */
+
 
 .panel-header {
     display: flex;
@@ -106,6 +130,9 @@ body {
     font-size: x-large;
 }
 
+#bigger-hint-container {
+    margin-top: 30px;
+}
 #bigger-hint-row {
     display: flex;
     flex-direction: row;
@@ -116,7 +143,7 @@ body {
     transition: opacity 0.5s 0.5s ease-in;
 }
 
-.answer {
+.clickable {
     padding-left: 16px;
     padding-right: 16px;
     padding-top: 8px;
@@ -125,9 +152,12 @@ body {
     border-bottom: 1px solid #494949;
     transition: all 0.2s;
 }
-.answer:hover, .answer:focus {
+.clickable:hover, .clickable:focus {
     background:#494949;
     cursor: pointer;
+}
+.clickable-border {
+    border: 1px solid #494949;
 }
 
 a {

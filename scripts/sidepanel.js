@@ -111,14 +111,14 @@ function renderHints(answers, submitted) {
 
 function renderBiggerHints(hintWord, submitted) {
   if (hintWord && submitted && submitted.includes(hintWord)) {
-    // Update the hint word display to show success!
+    // Update the hint word display to show success
     replaceHintContent(Array.from(hintWord));
     const hintRow = document.getElementById("bigger-hint-row");
     hintRow.classList.toggle("bigger-hint-solved");
     setTimeout(() => {
       hintRow.classList.toggle("bigger-hint-solved");
       replaceHintContent([]);
-    }, 2500);
+    }, 1000);
   }
 }
 
@@ -139,7 +139,7 @@ function renderAnswers(answers, submitted) {
     answerLink.setAttribute("rel", "noopener noreferer");
 
     const answerDiv = document.createElement("div");
-    answerDiv.classList.add("answer");
+    answerDiv.classList.add("clickable");
     answerDiv.innerText = answer;
     answerLink.append(answerDiv);
 

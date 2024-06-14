@@ -4,8 +4,8 @@ function injectScript(file_path, tag) {
 
   beanbagIcon = document.createElement("img");
   beanbagIcon.setAttribute("src", chrome.runtime.getURL("bean.png"));
-  beanbagIcon.setAttribute("height", 128);
-  beanbagIcon.setAttribute("width", 128);
+  beanbagIcon.setAttribute("height", 100);
+  beanbagIcon.setAttribute("width", 100);
   beanbagIcon.setAttribute("style", "cursor: pointer");
 
   beanbagIcon.addEventListener("click", () => {
