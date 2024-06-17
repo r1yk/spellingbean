@@ -1,4 +1,7 @@
 const SPELLING_BEE = "https://www.nytimes.com/puzzles/spelling-bee";
+chrome.storage.session.setAccessLevel({
+  accessLevel: "TRUSTED_AND_UNTRUSTED_CONTEXTS",
+});
 
 // Only enable side panel when a tab turns out to be Spelling Bee:
 chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
@@ -56,15 +59,24 @@ chrome.webRequest.onBeforeRequest.addListener(
     puzzleJson = JSON.parse(utf8decoder.decode(intarray));
 
     // Make sure we can ignore requests that are actually related to other puzzle dates(?) Why you do this NYT
-    const { spellingBeanPuzzleDate } = await chrome.storage.session.get(
-      "spellingBeanPuzzleDate"
-    );
+    const { spellingBeanPuzzleDate } = await chrome.storage.session.get({
+      spellingBeanPuzzleDate: "",
+    });
+    const { spellingBeanRankNames } = await chrome.storage.local.get({
+      spellingBeanRankNames: {},
+    });
     if (
       puzzleJson.game === "spelling_bee" &&
       puzzleJson.print_date === spellingBeanPuzzleDate
     ) {
+      const currentRank = puzzleJson.game_data.rank
+        .toLowerCase()
+        .replace(" ", "-");
+      const customRank = spellingBeanRankNames[currentRank];
+
       await chrome.storage.session.set({
         spellingBeanSubmitted: puzzleJson.game_data.answers,
+        spellingBeanCustomRank: customRank,
       });
     }
   },

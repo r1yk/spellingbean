@@ -43,3 +43,26 @@ window.addEventListener(
   },
   false
 );
+
+// Initially set the custom rank, if it exists
+chrome.storage.session
+  .get("spellingBeanCustomRank")
+  .then(({ spellingBeanCustomRank }) => {
+    if (spellingBeanCustomRank) {
+      const rankElements = document.querySelectorAll(".sb-progress-rank");
+      rankElements.forEach(
+        (rankElement) => (rankElement.innerText = spellingBeanCustomRank)
+      );
+    }
+  });
+
+chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
+  const { spellingBeanCustomRank } = changes;
+
+  if (spellingBeanCustomRank) {
+    const rankElements = document.querySelectorAll(".sb-progress-rank");
+    rankElements.forEach(
+      (rankElement) => (rankElement.innerText = spellingBeanCustomRank.newValue)
+    );
+  }
+});
