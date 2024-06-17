@@ -1,3 +1,7 @@
+function rankNameToId(rankName) {
+  return rankName.toLowerCase().replace(" ", "-");
+}
+
 const rankNames = [
   "Beginner",
   "Good Start",
@@ -31,7 +35,7 @@ gearIcon.addEventListener("click", async (event) => {
       const customRankInput = document.createElement("input");
       customRankInput.setAttribute("type", "text");
 
-      const inputId = rankName.toLowerCase();
+      const inputId = rankNameToId(rankName);
       customRankInput.setAttribute("id", inputId);
       customRankInput.setAttribute("name", inputId);
 
@@ -45,11 +49,9 @@ gearIcon.addEventListener("click", async (event) => {
 
     // Now that the inputs are created, add their default values:
     rankNames.forEach((rankName) => {
-      const rankNameInput = document.querySelector(
-        `input#${rankName.toLowerCase()}`
-      );
-      const customRankName =
-        spellingBeanRankNames[rankName.toLowerCase()] || "";
+      const rankNameId = rankNameToId(rankName);
+      const rankNameInput = document.querySelector(`input#${rankNameId}`);
+      const customRankName = spellingBeanRankNames[rankNameId] || "";
 
       if (customRankName) {
         rankNameInput.setAttribute("value", customRankName);
