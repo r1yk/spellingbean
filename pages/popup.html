@@ -6,7 +6,11 @@
     <div class="panel-header">
       <img src="../bean.png" height="50" width="50" />
       <h1>Spelling Bean</h1>
-      <div style="margin-left: auto" class="clickable clickable-border">
+      <div
+        id="gear-icon"
+        style="margin-left: auto"
+        class="clickable clickable-border"
+      >
         <img
           src="../gear.svg"
           alt="Settings"
@@ -16,5 +20,21 @@
         />
       </div>
     </div>
+    <div id="settings-container" class="hidden">
+      <h2>Settings</h2>
+      <p>Control stuff here</p>
+      <form id="rank-names-form">
+        <table id="rank-names-table">
+          <tbody>
+            <tr>
+              <th>Rank name</th>
+              <th>Custom name</th>
+            </tr>
+          </tbody>
+          <tbody id="editable-ranks"></tbody>
+        </table>
+      </form>
+    </div>
   </body>
+  <script src="../scripts/popup.js"></script>
 </html>

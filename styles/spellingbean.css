@@ -25,7 +25,7 @@ body.popup-body {
 
 }
 
-input[type="number"] {
+input[type="number"], input[type="text"]{
     all: unset;
     padding: 10px;
     border:1px solid #494949;
@@ -36,11 +36,6 @@ input[type="number"] {
 .unset-styles {
     all: unset;
 }
-
-/* input[type="submit"] {
-    all: unset;
-} */
-
 
 .panel-header {
     display: flex;
@@ -71,7 +66,16 @@ input[type="number"] {
     flex-grow: 1;
 }
 
-.hints-table {
+#rank-names-table {
+    width: 100%;
+    text-align: start;
+}
+
+#rank-names-table th {
+    text-align: left;
+}
+
+.hints-table  {
     width: 100%;
     text-align: center;
 }
@@ -161,7 +165,7 @@ input[type="number"] {
     transition: all 100ms;
 }
 .clickable:hover, .clickable:focus {
-    background:#494949;
+    background:#3a3a3a;
     cursor: pointer;
 }
 .clickable-border {
