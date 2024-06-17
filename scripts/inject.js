@@ -44,15 +44,17 @@ window.addEventListener(
   false
 );
 
+function updateRankName(rankName) {
+  const rankElements = document.querySelectorAll(".sb-progress-rank");
+  rankElements.forEach((rankElement) => (rankElement.innerText = rankName));
+}
+
 // Initially set the custom rank, if it exists
 chrome.storage.session
   .get("spellingBeanCustomRank")
   .then(({ spellingBeanCustomRank }) => {
     if (spellingBeanCustomRank) {
-      const rankElements = document.querySelectorAll(".sb-progress-rank");
-      rankElements.forEach(
-        (rankElement) => (rankElement.innerText = spellingBeanCustomRank)
-      );
+      updateRankName(spellingBeanCustomRank);
     }
   });
 
@@ -60,9 +62,6 @@ chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
   const { spellingBeanCustomRank } = changes;
 
   if (spellingBeanCustomRank) {
-    const rankElements = document.querySelectorAll(".sb-progress-rank");
-    rankElements.forEach(
-      (rankElement) => (rankElement.innerText = spellingBeanCustomRank.newValue)
-    );
+    updateRankName(spellingBeanCustomRank);
   }
 });
