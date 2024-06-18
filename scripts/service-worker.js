@@ -58,13 +58,14 @@ chrome.webRequest.onBeforeRequest.addListener(
     const utf8decoder = new TextDecoder();
     puzzleJson = JSON.parse(utf8decoder.decode(intarray));
 
-    // Make sure we can ignore requests that are actually related to other puzzle dates(?) Why you do this NYT
+    // Use spellingBeanPuzzleDate to make sure we can ignore requests that are actually related to other puzzle dates(?) Why you do this NYT
     const { spellingBeanPuzzleDate } = await chrome.storage.session.get({
       spellingBeanPuzzleDate: "",
     });
     const { spellingBeanRankNames } = await chrome.storage.local.get({
       spellingBeanRankNames: {},
     });
+
     if (
       puzzleJson.game === "spelling_bee" &&
       puzzleJson.print_date === spellingBeanPuzzleDate

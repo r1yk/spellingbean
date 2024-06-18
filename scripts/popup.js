@@ -71,4 +71,7 @@ ranksForm.addEventListener("submit", async (event) => {
   await chrome.storage.local.set({
     spellingBeanRankNames: rankFormData,
   });
+  await chrome.storage.session.set({
+    spellingBeanCustomRank: null,
+  });
 });

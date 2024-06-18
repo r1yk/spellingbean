@@ -29,7 +29,7 @@ injectScript(chrome.runtime.getURL("scripts/on-page-load.js"), "body");
 // Forward window events to the extension via `chrome.runtime.sendMessage`
 window.addEventListener(
   "message",
-  (event) => {
+  async (event) => {
     // We only accept messages from ourselves
     if (event.source !== window) {
       return;
@@ -38,6 +38,10 @@ window.addEventListener(
     if (event.data.type && event.data.type === "TOGGLE_BEAN") {
       chrome.runtime.sendMessage("TOGGLE_BEAN");
     } else if (event.data.type && event.data.type === "GAME_DATA") {
+      const { spellingBeanCustomRank } = await chrome.storage.session.get({
+        spellingBeanCustomRank: null,
+      });
+      updateRankName(spellingBeanCustomRank);
       chrome.runtime.sendMessage(JSON.parse(event.data.text));
     }
   },
@@ -49,19 +53,11 @@ function updateRankName(rankName) {
   rankElements.forEach((rankElement) => (rankElement.innerText = rankName));
 }
 
-// Initially set the custom rank, if it exists
-chrome.storage.session
-  .get("spellingBeanCustomRank")
-  .then(({ spellingBeanCustomRank }) => {
-    if (spellingBeanCustomRank) {
-      updateRankName(spellingBeanCustomRank);
-    }
-  });
-
 chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
   const { spellingBeanCustomRank } = changes;
-
   if (spellingBeanCustomRank) {
-    updateRankName(spellingBeanCustomRank);
+    if (spellingBeanCustomRank.newValue) {
+      updateRankName(spellingBeanCustomRank.newValue);
+    }
   }
 });
