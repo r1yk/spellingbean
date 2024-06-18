@@ -49,8 +49,26 @@ window.addEventListener(
 );
 
 function updateRankName(rankName) {
-  const rankElements = document.querySelectorAll(".sb-progress-rank");
-  rankElements.forEach((rankElement) => (rankElement.innerText = rankName));
+  if (rankName) {
+    const nytElement = document.querySelector(".sb-progress-rank");
+    if (nytElement) {
+      const container = nytElement.parentElement;
+      nytElement.remove();
+
+      const newElement = document.createElement("h4");
+      newElement.setAttribute(
+        "style",
+        "min-width: 5em; font-weight: 700; display: flex;align-items: center;"
+      );
+      newElement.classList.add("spellingbean-progress-rank");
+      container.prepend(newElement);
+    }
+
+    const rankElements = document.querySelectorAll(
+      ".spellingbean-progress-rank"
+    );
+    rankElements.forEach((rankElement) => (rankElement.innerText = rankName));
+  }
 }
 
 chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
