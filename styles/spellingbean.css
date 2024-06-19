@@ -45,25 +45,17 @@ input[type="number"], input[type="text"]{
     padding: 10px 0 10px 0;
 }
 
-.panel-button {
-    background-color: #eeeeee;
-    color: #2c2c2c;
-    border: 1px solid #dcdcdc;
-    border-radius: 2.5em;
-    padding: 15px;
-    font-size: larger;
-    cursor: pointer;
-}
-
-.panel-button:active {
-    background-color: #ededed
-}
-
 .button-row {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     flex-grow: 1;
+}
+
+#rank-names-container {
+    border: 1px solid #494949;
+    border-radius: 5px;
+    padding: 5px;
 }
 
 #rank-names-table {
@@ -72,7 +64,20 @@ input[type="number"], input[type="text"]{
 }
 
 #rank-names-table th {
-    text-align: left;
+    text-align: start;
+    text-transform: uppercase;
+    font-size: smaller;
+    padding-bottom: 5px;
+}
+#rank-names-table td {
+    padding-bottom: 5px;
+}
+
+#save-settings {
+    /* display: flex;
+    justify-content: end; */
+    /* text-align: center; */
+    padding-top: 10px;
 }
 
 .hints-table  {

@@ -64,6 +64,7 @@ const ranksForm = document.getElementById("rank-names-form");
 
 ranksForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+
   const formData = new FormData(ranksForm);
   const rankFormData = {};
   formData.entries().forEach((entry) => (rankFormData[entry[0]] = entry[1]));
@@ -74,4 +75,6 @@ ranksForm.addEventListener("submit", async (event) => {
   await chrome.storage.session.set({
     spellingBeanCustomRank: null,
   });
+
+  window.close();
 });

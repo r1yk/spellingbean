@@ -1,30 +1,27 @@
 <html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="../styles/spellingbean.css" />
-  </head>
-  <body class="popup-body">
-    <div class="panel-header">
-      <img src="../bean.png" height="50" width="50" />
-      <h1>Spelling Bean</h1>
-      <div
-        id="gear-icon"
-        style="margin-left: auto"
-        class="clickable clickable-border"
-      >
-        <img
-          src="../gear.svg"
-          alt="Settings"
-          title="Settings"
-          height="24"
-          width="24"
-        />
-      </div>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="../styles/spellingbean.css" />
+</head>
+
+<body class="popup-body">
+  <div class="panel-header">
+    <img src="../bean.png" height="50" width="50" />
+    <h1>Spelling Bean</h1>
+    <div id="gear-icon" style="margin-left: auto" class="clickable clickable-border">
+      <img src="../gear.svg" alt="Settings" title="Settings" height="24" width="24" />
     </div>
-    <div id="settings-container" class="hidden">
-      <h2>Settings</h2>
+  </div>
+  <div id="settings-container" class="hidden">
+    <div id="rank-names-container">
+      <h2>Customize Rank Names</h2>
       <p>Control stuff here</p>
       <form id="rank-names-form">
         <table id="rank-names-table">
+          <colgroup>
+            <col span="1" style="width: 40%;" />
+            <col span="1" style="width: 60%;" />
+          </colgroup>
           <tbody>
             <tr>
               <th>Rank name</th>
@@ -32,14 +29,21 @@
             </tr>
           </tbody>
           <tbody id="editable-ranks"></tbody>
+          <tbody>
+            <tr>
+              <td></td>
+              <td>
+                <div id="save-settings">
+                  <input type="submit" value="Save and close" class="unset-styles clickable clickable-border larger" />
+                </div>
+              </td>
+            </tr>
+          </tbody>
         </table>
-        <input
-          type="submit"
-          value="Save"
-          class="unset-styles clickable clickable-border larger"
-        />
       </form>
     </div>
-  </body>
-  <script src="../scripts/popup.js"></script>
+  </div>
+</body>
+<script src="../scripts/popup.js"></script>
+
 </html>
