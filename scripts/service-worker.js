@@ -1,4 +1,5 @@
 const SPELLING_BEE = "https://www.nytimes.com/puzzles/spelling-bee";
+
 chrome.storage.session.setAccessLevel({
   accessLevel: "TRUSTED_AND_UNTRUSTED_CONTEXTS",
 });
