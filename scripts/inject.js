@@ -44,7 +44,7 @@ window.addEventListener(
   false
 );
 
-function updateRankName(rankName) {
+function updateRankName(rankName, allRankNames) {
   if (rankName) {
     const nytElement = document.querySelector(".sb-progress-rank");
     if (nytElement) {
@@ -69,6 +69,6 @@ function updateRankName(rankName) {
 
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   if (request.updateRankName) {
-    updateRankName(request.updateRankName);
+    updateRankName(request.updateRankName, request.allRankNames);
   }
 });

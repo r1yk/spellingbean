@@ -1,9 +1,5 @@
 const SPELLING_BEE = "https://www.nytimes.com/puzzles/spelling-bee";
 
-// chrome.storage.session.setAccessLevel({
-//   accessLevel: "TRUSTED_AND_UNTRUSTED_CONTEXTS",
-// });
-
 // Only enable side panel when a tab turns out to be Spelling Bee:
 chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
   if (!tab.url) return;
@@ -63,8 +59,17 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
   const { spellingBeanCustomRank } = changes;
   if (spellingBeanCustomRank?.newValue) {
-    chrome.runtime.sendMessage({
+    const { spellingBeanRankNames } = await chrome.storage.local.get({
+      spellingBeanRankNames: {},
+    });
+
+    const [tab] = await chrome.tabs.query({
+      active: true,
+      lastFocusedWindow: true,
+    });
+    chrome.tabs.sendMessage(tab.id, {
       updateRankName: spellingBeanCustomRank.newValue,
+      allRankNames: spellingBeanRankNames,
     });
   }
 });
@@ -87,7 +92,9 @@ chrome.webRequest.onBeforeRequest.addListener(
     ) {
       await chrome.storage.session.set({
         spellingBeanSubmitted: puzzleJson.game_data.answers,
-        spellingBeanCustomRank: getCustomRankName(puzzleJson.game_data.rank),
+        spellingBeanCustomRank: await getCustomRankName(
+          puzzleJson.game_data.rank
+        ),
       });
     }
   },
