@@ -1,17 +1,29 @@
-setTimeout(() => {
-  alreadySubmittedElements = document.querySelectorAll(
+function getCurrentRankName() {
+  const nytElement = document.querySelector(".sb-progress-rank");
+  if (nytElement) {
+    return nytElement.innerText.toLowerCase().replace(" ", "-");
+  }
+  return null;
+}
+
+function getSubmittedAnswers() {
+  const alreadySubmittedElements = document.querySelectorAll(
     "ul.sb-wordlist-items-pag li"
   );
-  alreadySubmittedWords = Array.from(alreadySubmittedElements).map((element) =>
+  return Array.from(alreadySubmittedElements).map((element) =>
     element.innerText.toLowerCase()
   );
+}
+
+setTimeout(() => {
   window.postMessage({
     type: "GAME_DATA",
     text: JSON.stringify({
       spellingBeanData: {
         answers: window.gameData.today.answers,
-        submitted: alreadySubmittedWords,
+        submitted: getSubmittedAnswers(),
         puzzleDate: window.gameData.today.printDate,
+        nytRankName: getCurrentRankName(),
       },
     }),
   });

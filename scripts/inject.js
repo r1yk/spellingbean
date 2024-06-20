@@ -38,10 +38,6 @@ window.addEventListener(
     if (event.data.type && event.data.type === "TOGGLE_BEAN") {
       chrome.runtime.sendMessage("TOGGLE_BEAN");
     } else if (event.data.type && event.data.type === "GAME_DATA") {
-      const { spellingBeanCustomRank } = await chrome.storage.session.get({
-        spellingBeanCustomRank: null,
-      });
-      updateRankName(spellingBeanCustomRank);
       chrome.runtime.sendMessage(JSON.parse(event.data.text));
     }
   },
@@ -71,11 +67,8 @@ function updateRankName(rankName) {
   }
 }
 
-chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
-  const { spellingBeanCustomRank } = changes;
-  if (spellingBeanCustomRank) {
-    if (spellingBeanCustomRank.newValue) {
-      updateRankName(spellingBeanCustomRank.newValue);
-    }
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+  if (request.updateRankName) {
+    updateRankName(request.updateRankName);
   }
 });

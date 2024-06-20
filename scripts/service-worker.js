@@ -1,8 +1,8 @@
 const SPELLING_BEE = "https://www.nytimes.com/puzzles/spelling-bee";
 
-chrome.storage.session.setAccessLevel({
-  accessLevel: "TRUSTED_AND_UNTRUSTED_CONTEXTS",
-});
+// chrome.storage.session.setAccessLevel({
+//   accessLevel: "TRUSTED_AND_UNTRUSTED_CONTEXTS",
+// });
 
 // Only enable side panel when a tab turns out to be Spelling Bee:
 chrome.tabs.onUpdated.addListener(async (tabId, info, tab) => {
@@ -41,13 +41,30 @@ chrome.tabs.onActivated.addListener(async ({ tabId }) => {
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   if (request === "TOGGLE_BEAN") {
     await chrome.sidePanel.open({ tabId: sender.tab.id });
-  }
-  if (request.spellingBeanData) {
+  } else if (request.spellingBeanData) {
+    // Clear out the current rank name to ensure that the onChanged listener will fire after
     await chrome.storage.session.set({
-      spellingBeanAnswers: request.spellingBeanData.answers,
-      spellingBeanSubmitted: request.spellingBeanData.submitted,
-      spellingBeanPuzzleDate: request.spellingBeanData.puzzleDate,
+      spellingBeanCustomRank: null,
+    });
+
+    const { answers, submitted, puzzleDate, nytRankName } =
+      request.spellingBeanData;
+
+    await chrome.storage.session.set({
+      spellingBeanAnswers: answers,
+      spellingBeanSubmitted: submitted,
+      spellingBeanPuzzleDate: puzzleDate,
       spellingBeanRevealed: false,
+      spellingBeanCustomRank: await getCustomRankName(nytRankName),
+    });
+  }
+});
+
+chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
+  const { spellingBeanCustomRank } = changes;
+  if (spellingBeanCustomRank?.newValue) {
+    chrome.runtime.sendMessage({
+      updateRankName: spellingBeanCustomRank.newValue,
     });
   }
 });
@@ -63,22 +80,14 @@ chrome.webRequest.onBeforeRequest.addListener(
     const { spellingBeanPuzzleDate } = await chrome.storage.session.get({
       spellingBeanPuzzleDate: "",
     });
-    const { spellingBeanRankNames } = await chrome.storage.local.get({
-      spellingBeanRankNames: {},
-    });
 
     if (
       puzzleJson.game === "spelling_bee" &&
       puzzleJson.print_date === spellingBeanPuzzleDate
     ) {
-      const currentRank = puzzleJson.game_data.rank
-        .toLowerCase()
-        .replace(" ", "-");
-      const customRank = spellingBeanRankNames[currentRank];
-
       await chrome.storage.session.set({
         spellingBeanSubmitted: puzzleJson.game_data.answers,
-        spellingBeanCustomRank: customRank,
+        spellingBeanCustomRank: getCustomRankName(puzzleJson.game_data.rank),
       });
     }
   },
@@ -87,3 +96,18 @@ chrome.webRequest.onBeforeRequest.addListener(
   },
   ["requestBody"]
 );
+
+async function getCustomRankName(nytRankName) {
+  const { spellingBeanRankNames } = await chrome.storage.local.get({
+    spellingBeanRankNames: {},
+  });
+  return spellingBeanRankNames[nytRankName.toLowerCase().replace(" ", "-")];
+}
+
+function getCurrentRankName() {
+  const nytElement = document.querySelector(".sb-progress-rank");
+  if (nytElement) {
+    return nytElement.innerText.toLowerCase().replace(" ", "-");
+  }
+  return null;
+}
