@@ -53,9 +53,7 @@ input[type="number"], input[type="text"]{
 }
 
 #rank-names-container {
-    border: 1px solid #494949;
-    border-radius: 5px;
-    padding: 5px;
+    padding: 10px;
 }
 
 #rank-names-table {
@@ -74,9 +72,6 @@ input[type="number"], input[type="text"]{
 }
 
 #save-settings {
-    /* display: flex;
-    justify-content: end; */
-    /* text-align: center; */
     padding-top: 10px;
 }
 

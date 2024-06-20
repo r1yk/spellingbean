@@ -113,7 +113,7 @@ async function getCustomRankName(nytRankName) {
 
 function getCurrentRankName() {
   const nytElement = document.querySelector(".sb-progress-rank");
-  if (nytElement) {
+  if (nytElement?.innerText) {
     return nytElement.innerText.toLowerCase().replace(" ", "-");
   }
   return null;
