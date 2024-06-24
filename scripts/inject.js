@@ -1,3 +1,5 @@
+let customRankNames = null;
+
 function injectScript(file_path, tag) {
   // Add the clickable icon that will open the side panel
   controls = document.querySelector(".sb-controls");
@@ -51,6 +53,7 @@ function updateRankName(rankName, allRankNames) {
       const container = nytElement.parentElement;
       nytElement.remove();
 
+      // Add back a lookalike element that only Spelling Bean will update
       const newElement = document.createElement("h4");
       newElement.setAttribute(
         "style",
@@ -60,10 +63,12 @@ function updateRankName(rankName, allRankNames) {
       container.prepend(newElement);
     }
 
-    const rankElements = document.querySelectorAll(
-      ".spellingbean-progress-rank"
-    );
-    rankElements.forEach((rankElement) => (rankElement.innerText = rankName));
+    document
+      .querySelectorAll(".spellingbean-progress-rank")
+      .forEach((rankElement) => (rankElement.innerText = rankName));
+  }
+  if (allRankNames) {
+    customRankNames = allRankNames;
   }
 }
 
@@ -71,4 +76,47 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   if (request.updateRankName) {
     updateRankName(request.updateRankName, request.allRankNames);
   }
+});
+
+// Use this function as a listener that will update custom rank names when the NYT rank modal opens
+function replaceAllRankNames(mutationRecords, mutationObserver) {
+  mutationRecords.forEach((record) => {
+    if (record.attributeName === "class") {
+      const modalSystem = document.querySelector(".sb-modal-system");
+      if (customRankNames && modalSystem.classList.contains("sb-modal-open")) {
+        const titles = modalSystem.querySelectorAll(
+          ".sb-modal-ranks__rank-title"
+        );
+        titles.forEach((title) => {
+          const isCurrentRank = title.childElementCount > 0;
+          const elementToModify = isCurrentRank
+            ? title.querySelector("span.current-rank")
+            : title;
+          const titleKey = elementToModify.innerText
+            .toLowerCase()
+            .replace(" ", "-");
+          const customRankName = customRankNames[titleKey];
+          if (customRankName) {
+            elementToModify.innerText = customRankName;
+          }
+
+          // Replace the reference to "Genius" in the current rank description
+          if (isCurrentRank && customRankNames.genius) {
+            const subtext = title.querySelector(".sub-text");
+            subtext.innerText = subtext.innerText.replace(
+              "Genius",
+              customRankNames.genius
+            );
+          }
+        });
+      }
+    }
+  });
+}
+
+const nytModalSystem = document.querySelector(".sb-modal-system");
+const observer = new MutationObserver(replaceAllRankNames);
+
+observer.observe(nytModalSystem, {
+  attributes: true,
 });
