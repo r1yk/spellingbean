@@ -182,8 +182,21 @@ a {
     opacity: 0%;
 }
 
+.progress-container {
+    width: 100%;
+    background: #494949;
+    border-radius: 5px;
+}
+
 .progress-bar {
+    color: #3a3a3a;
+    background-color: rgb(119, 185, 119);
+    padding: 5px;
+    width: 0%;
     transition: width 0.5s ease-in;
+    border-radius: 5px;
+    text-align: center;
+    font-size: larger;
 }
 
 .bean-container {

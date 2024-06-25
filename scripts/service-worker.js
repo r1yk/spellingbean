@@ -62,6 +62,12 @@ function wordsToPoints(words) {
   let points = 0;
   words.forEach((word) => {
     points += word.length > 4 ? word.length : 1;
+    // Add 7 extra points if a word is a pangram, meaning it will have all 7 letters present
+    const letterSet = new Set();
+    Array.from(word).forEach((letter) => letterSet.add(letter));
+    if (letterSet.size === 7) {
+      points += 7;
+    }
   });
   console.log(points, "points");
   return points;

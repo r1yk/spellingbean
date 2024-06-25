@@ -20,10 +20,10 @@ async function renderHintsAndAnswers() {
 }
 
 function renderHome(points, totalPoints) {
-  const summary = document.createElement("h3");
-  summary.innerText = `${points} / ${totalPoints}`;
-  const homeContainer = document.getElementById("home-container");
-  homeContainer.replaceChildren(summary);
+  const percentage = Math.round((points / totalPoints) * 100);
+  const pointsBar = document.getElementById("points-bar");
+  pointsBar.setAttribute("style", `width: ${percentage}%`);
+  pointsBar.innerText = `${points} / ${totalPoints}`;
 }
 
 function renderHints(answers, submitted) {
