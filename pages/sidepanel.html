@@ -4,7 +4,9 @@
   </head>
   <body>
     <div class="panel-header">
-      <img src="../bean.png" height="50" width="50" />
+      <div class="bean-container clickable clickable-border">
+        <img src="../bean.png" id="bean-icon" height="50" width="50" />
+      </div>
       <div class="button-row">
         <div id="hints-button" class="clickable clickable-border larger">
           Hints
@@ -21,6 +23,9 @@
       </div>
     </div>
     <div id="main-content">
+      <div class="home" id="home-container">
+        <h2>Home</h2>
+      </div>
       <div class="hints hidden" id="hints-container">
         <h2>Word length by letter</h2>
         <table class="hints-table" id="hints-table"></table>

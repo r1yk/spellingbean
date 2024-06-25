@@ -168,6 +168,7 @@ async function showAnswers() {
     alreadyRevealed ||
     confirm("Are you sure you want to reveal the answers for this puzzle?")
   ) {
+    const home = document.getElementById("home-container");
     const answers = document.getElementById("answers-container");
     const hints = document.getElementById("hints-container");
     const biggerHints = document.getElementById("bigger-hints-container");
@@ -175,6 +176,7 @@ async function showAnswers() {
     answers.setAttribute("class", "answers shown");
     hints.setAttribute("class", "hints hidden");
     biggerHints.setAttribute("class", "bigger-hints hidden");
+    home.setAttribute("class", "home hidden");
 
     if (!alreadyRevealed) {
       await chrome.storage.session.set({
@@ -184,25 +186,44 @@ async function showAnswers() {
   }
 }
 
-function showHints() {
+function showHome() {
+  const home = document.getElementById("home-container");
   const hints = document.getElementById("hints-container");
   const biggerHints = document.getElementById("bigger-hints-container");
   const answers = document.getElementById("answers-container");
 
+  home.setAttribute("class", "home shown");
+  hints.setAttribute("class", "hints hidden");
+  biggerHints.setAttribute("class", "bigger-hints hidden");
+  answers.setAttribute("class", "answers hidden");
+}
+
+function showHints() {
+  const home = document.getElementById("home-container");
+  const hints = document.getElementById("hints-container");
+  const biggerHints = document.getElementById("bigger-hints-container");
+  const answers = document.getElementById("answers-container");
+
+  home.setAttribute("class", "home hidden");
   hints.setAttribute("class", "hints shown");
   biggerHints.setAttribute("class", "bigger-hints hidden");
   answers.setAttribute("class", "answers hidden");
 }
 
 function showBiggerHints() {
+  const home = document.getElementById("home-container");
   const hints = document.getElementById("hints-container");
   const biggerHints = document.getElementById("bigger-hints-container");
   const answers = document.getElementById("answers-container");
 
+  home.setAttribute("class", "home hidden");
   hints.setAttribute("class", "hints hidden");
   biggerHints.setAttribute("class", "bigger-hints shown");
   answers.setAttribute("class", "answers hidden");
 }
+
+const homeButton = document.getElementById("bean-icon");
+homeButton.addEventListener("click", showHome);
 
 const hintsButton = document.getElementById("hints-button");
 hintsButton.addEventListener("click", showHints);
