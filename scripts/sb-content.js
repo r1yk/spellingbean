@@ -130,10 +130,28 @@ function captureNytMessage(mutationRecords, mutationObserver) {
         chrome.runtime.sendMessage({
           error: messageBox.innerText,
         });
+
+        // Remove a letter. Shame.
+        const hiveLetters = Array.from(
+          document.querySelectorAll(".hive-cell.outer text")
+        ).filter((letter) => letter.textContent != "😸");
+
+        if (hiveLetters.length) {
+          const randomIndex = getRandomInt(hiveLetters.length);
+          hiveLetters[randomIndex].textContent = "😸";
+        } else {
+          alert("Game over: you have been mauled by a Beanbag.");
+          document.querySelector("body").remove();
+        }
       }
     }
   });
 }
+
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
 const nytMessageBox = document.querySelector(".sb-message-box");
 const messageObserver = new MutationObserver(captureNytMessage);
 
