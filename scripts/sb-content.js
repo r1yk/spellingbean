@@ -115,8 +115,28 @@ function replaceAllRankNames(mutationRecords, mutationObserver) {
 }
 
 const nytModalSystem = document.querySelector(".sb-modal-system");
-const observer = new MutationObserver(replaceAllRankNames);
+const modalObserver = new MutationObserver(replaceAllRankNames);
 
-observer.observe(nytModalSystem, {
+modalObserver.observe(nytModalSystem, {
+  attributes: true,
+});
+
+// Listen to updates to the message box so things like bad entries can be detected
+function captureNytMessage(mutationRecords, mutationObserver) {
+  mutationRecords.forEach((record) => {
+    if (record.attributeName === "class") {
+      const messageBox = document.querySelector(".sb-message-box");
+      if (messageBox.classList.contains("error-message")) {
+        chrome.runtime.sendMessage({
+          error: messageBox.innerText,
+        });
+      }
+    }
+  });
+}
+const nytMessageBox = document.querySelector(".sb-message-box");
+const messageObserver = new MutationObserver(captureNytMessage);
+
+messageObserver.observe(nytMessageBox, {
   attributes: true,
 });

@@ -55,6 +55,8 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       spellingBeanPoints: wordsToPoints(submitted),
       spellingBeanTotalPoints: wordsToPoints(answers),
     });
+  } else if (request.error) {
+    console.log("received error", request.error);
   }
 });
 
@@ -90,14 +92,14 @@ chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
   }
 });
 
-// Listen for state updates so that the list of submitted words can be kept current
+// Listen for state updates so that the list of submitted words is kept current
 chrome.webRequest.onBeforeRequest.addListener(
   async (details) => {
     const intarray = new Int8Array(details.requestBody.raw[0].bytes);
     const utf8decoder = new TextDecoder();
     puzzleJson = JSON.parse(utf8decoder.decode(intarray));
 
-    // Use spellingBeanPuzzleDate to make sure we can ignore requests that are actually related to other puzzle dates(?) Why you do this NYT
+    // Use spellingBeanPuzzleDate to make sure to ignore requests that are actually related to other puzzle dates(?) Why you do this NYT
     const { spellingBeanPuzzleDate } = await chrome.storage.session.get({
       spellingBeanPuzzleDate: "",
     });
