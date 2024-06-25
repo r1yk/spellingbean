@@ -20,7 +20,7 @@
   "content_scripts": [
     {
       "matches": ["https://www.nytimes.com/puzzles/*"],
-      "js": ["/scripts/inject.js"],
+      "js": ["/scripts/sb-content.js"],
       "all_frames": true
     }
   ],
