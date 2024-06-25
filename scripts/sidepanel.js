@@ -119,6 +119,10 @@ function renderBiggerHints(hintWord, submitted) {
       hintRow.classList.toggle("bigger-hint-solved");
       replaceHintContent([]);
     }, 1000);
+
+    chrome.storage.session.set({
+      spellingBeanHintWord: null,
+    });
   }
 }
 
@@ -158,9 +162,12 @@ renderHintsAndAnswers();
 
 async function showAnswers() {
   data = await chrome.storage.session.get("spellingBeanRevealed");
-  revealed = data.spellingBeanRevealed;
+  alreadyRevealed = data.spellingBeanRevealed;
 
-  if (revealed || confirm("Are you sure you want to reveal the answers?")) {
+  if (
+    alreadyRevealed ||
+    confirm("Are you sure you want to reveal the answers for this puzzle?")
+  ) {
     const answers = document.getElementById("answers-container");
     const hints = document.getElementById("hints-container");
     const biggerHints = document.getElementById("bigger-hints-container");
@@ -169,7 +176,7 @@ async function showAnswers() {
     hints.setAttribute("class", "hints hidden");
     biggerHints.setAttribute("class", "bigger-hints hidden");
 
-    if (!revealed) {
+    if (!alreadyRevealed) {
       await chrome.storage.session.set({
         spellingBeanRevealed: true,
       });
