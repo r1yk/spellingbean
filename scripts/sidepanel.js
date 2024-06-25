@@ -13,17 +13,31 @@ async function renderHintsAndAnswers() {
     spellingBeanTotalPoints: 0,
   });
 
-  renderHome(spellingBeanPoints, spellingBeanTotalPoints);
+  renderHome(
+    spellingBeanPoints,
+    spellingBeanTotalPoints,
+    spellingBeanSubmitted.length,
+    spellingBeanAnswers.length
+  );
   renderHints(spellingBeanAnswers, spellingBeanSubmitted);
   renderBiggerHints(spellingBeanHintWord, spellingBeanSubmitted);
   renderAnswers(spellingBeanAnswers, spellingBeanSubmitted);
 }
 
-function renderHome(points, totalPoints) {
-  const percentage = Math.round((points / totalPoints) * 100);
+function renderHome(points, totalPoints, words, totalWords) {
+  const pointsPercentage = Math.round((points / totalPoints) * 100);
   const pointsBar = document.getElementById("points-bar");
-  pointsBar.setAttribute("style", `width: ${percentage}%`);
-  pointsBar.innerText = `${points} / ${totalPoints}`;
+  pointsBar.setAttribute("style", `width: ${pointsPercentage}%`);
+
+  const wordsPercentage = Math.round((words / totalWords) * 100);
+  const wordsBar = document.getElementById("words-bar");
+  wordsBar.setAttribute("style", `width: ${wordsPercentage}%`);
+
+  const pointsSummary = document.getElementById("points-summary");
+  pointsSummary.innerText = `You have earned ${points} out of ${totalPoints} points.`;
+
+  const wordsSummary = document.getElementById("words-summary");
+  wordsSummary.innerText = `You have found ${words} out of ${totalWords} words.`;
 }
 
 function renderHints(answers, submitted) {

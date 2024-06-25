@@ -69,7 +69,6 @@ function wordsToPoints(words) {
       points += 7;
     }
   });
-  console.log(points, "points");
   return points;
 }
 
