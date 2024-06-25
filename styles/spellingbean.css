@@ -187,7 +187,10 @@ a {
 }
 
 .bean-container {
-    padding: 3px;
+    padding: 0px;
     border-radius: 50%;
 }
 
+.bean-container:hover {
+    cursor: pointer;
+}

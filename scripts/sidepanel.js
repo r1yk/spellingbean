@@ -1,14 +1,29 @@
 async function renderHintsAndAnswers() {
-  const { spellingBeanAnswers, spellingBeanSubmitted, spellingBeanHintWord } =
-    await chrome.storage.session.get([
-      "spellingBeanAnswers",
-      "spellingBeanSubmitted",
-      "spellingBeanHintWord",
-    ]);
+  const {
+    spellingBeanAnswers,
+    spellingBeanSubmitted,
+    spellingBeanHintWord,
+    spellingBeanPoints,
+    spellingBeanTotalPoints,
+  } = await chrome.storage.session.get({
+    spellingBeanAnswers: [],
+    spellingBeanSubmitted: [],
+    spellingBeanHintWord: null,
+    spellingBeanPoints: 0,
+    spellingBeanTotalPoints: 0,
+  });
 
+  renderHome(spellingBeanPoints, spellingBeanTotalPoints);
   renderHints(spellingBeanAnswers, spellingBeanSubmitted);
   renderBiggerHints(spellingBeanHintWord, spellingBeanSubmitted);
   renderAnswers(spellingBeanAnswers, spellingBeanSubmitted);
+}
+
+function renderHome(points, totalPoints) {
+  const summary = document.createElement("h3");
+  summary.innerText = `${points} / ${totalPoints}`;
+  const homeContainer = document.getElementById("home-container");
+  homeContainer.replaceChildren(summary);
 }
 
 function renderHints(answers, submitted) {

@@ -52,9 +52,20 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       spellingBeanPuzzleDate: puzzleDate,
       spellingBeanRevealed: false,
       spellingBeanCustomRank: await getCustomRankName(nytRankName),
+      spellingBeanPoints: wordsToPoints(submitted),
+      spellingBeanTotalPoints: wordsToPoints(answers),
     });
   }
 });
+
+function wordsToPoints(words) {
+  let points = 0;
+  words.forEach((word) => {
+    points += word.length > 4 ? word.length : 1;
+  });
+  console.log(points, "points");
+  return points;
+}
 
 chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
   const { spellingBeanCustomRank } = changes;
@@ -92,6 +103,7 @@ chrome.webRequest.onBeforeRequest.addListener(
     ) {
       await chrome.storage.session.set({
         spellingBeanSubmitted: puzzleJson.game_data.answers,
+        spellingBeanPoints: wordsToPoints(puzzleJson.game_data.answers),
         spellingBeanCustomRank: await getCustomRankName(
           puzzleJson.game_data.rank
         ),
