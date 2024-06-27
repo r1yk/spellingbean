@@ -207,3 +207,10 @@ a {
 .bean-container:hover {
     cursor: pointer;
 }
+
+#save-settings {
+    display: flex;
+    justify-content: end;
+    margin: 10px;
+    font-size: larger;
+}

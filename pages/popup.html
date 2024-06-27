@@ -1,26 +1,37 @@
 <html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="../styles/spellingbean.css" />
+  </head>
 
-<head>
-  <link rel="stylesheet" type="text/css" href="../styles/spellingbean.css" />
-</head>
-
-<body class="popup-body">
-  <div class="panel-header">
-    <img src="../bean.png" height="50" width="50" />
-    <h1>Spelling Bean</h1>
-    <div id="gear-icon" style="margin-left: auto" class="clickable clickable-border">
-      <img src="../gear.svg" alt="Settings" title="Settings" height="24" width="24" />
+  <body class="popup-body">
+    <div class="panel-header">
+      <img src="../bean.png" height="50" width="50" />
+      <h1>Spelling Bean</h1>
+      <div
+        id="gear-icon"
+        style="margin-left: auto"
+        class="clickable clickable-border"
+      >
+        <img
+          src="../gear.svg"
+          alt="Settings"
+          title="Settings"
+          height="24"
+          width="24"
+        />
+      </div>
     </div>
-  </div>
-  <div id="settings-container" class="hidden">
-    <div id="rank-names-container">
-      <h2>Customize rank names</h2>
-      <p>Create your own custom labels that will replace the normal ones as you move through the ranks.</p>
-      <form id="rank-names-form">
+    <div id="settings-container" class="hidden">
+      <form id="settings-form">
         <table id="rank-names-table">
+          <h2>Customize rank names</h2>
+          <p>
+            Create your own custom labels that will replace the normal ones as
+            you move through the ranks.
+          </p>
           <colgroup>
-            <col span="1" style="width: 40%;" />
-            <col span="1" style="width: 60%;" />
+            <col span="1" style="width: 40%" />
+            <col span="1" style="width: 60%" />
           </colgroup>
           <tbody>
             <tr>
@@ -32,18 +43,23 @@
           <tbody>
             <tr>
               <td></td>
-              <td>
-                <div id="save-settings">
-                  <input type="submit" value="Save and close" class="unset-styles clickable clickable-border larger" />
-                </div>
-              </td>
+              <td></td>
             </tr>
           </tbody>
         </table>
+        <h2>Evil Mode</h2>
+        <p>When enabled, incorrect guesses will be punished lightly.</p>
+        <input type="checkbox" id="evil-mode" name="evil-mode" />
+        <label for="evil-mode" class="larger">Enable evil mode</label>
+        <div id="save-settings">
+          <input
+            type="submit"
+            value="Save and close"
+            class="unset-styles clickable clickable-border larger"
+          />
+        </div>
       </form>
     </div>
-  </div>
-</body>
-<script src="../scripts/popup.js"></script>
-
+  </body>
+  <script src="../scripts/popup.js"></script>
 </html>
