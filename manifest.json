@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Spelling Bean",
-  "description": "Make Spelling Bee more fun",
+  "description": "Make the NYT Spelling Bee a little weirder and a little more fun",
   "version": "1.0",
   "action": {
     "default_popup": "pages/popup.html",

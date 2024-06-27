@@ -134,7 +134,9 @@ async function getCustomRankName(nytRankName) {
   const { spellingBeanRankNames } = await chrome.storage.local.get({
     spellingBeanRankNames: {},
   });
-  return spellingBeanRankNames[nytRankName.toLowerCase().replace(" ", "-")];
+  return spellingBeanRankNames[
+    `rank-${nytRankName.toLowerCase().replace(" ", "-")}`
+  ];
 }
 
 function getCurrentRankName() {
