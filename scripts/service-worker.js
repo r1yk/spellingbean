@@ -56,7 +56,14 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       spellingBeanTotalPoints: wordsToPoints(answers),
     });
   } else if (request.error) {
-    console.log("received error", request.error);
+    const { spellingBeanEvilMode } = await chrome.storage.local.get({
+      spellingBeanEvilMode: false,
+    });
+    if (spellingBeanEvilMode) {
+      chrome.tabs.sendMessage(sender.tab.id, {
+        punishMistake: true,
+      });
+    }
   }
 });
 

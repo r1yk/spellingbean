@@ -75,6 +75,16 @@ function updateRankName(rankName, allRankNames) {
 chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
   if (request.updateRankName) {
     updateRankName(request.updateRankName, request.allRankNames);
+  } else if (request.punishMistake) {
+    // Replace a letter with a grinning cat, tough luck!
+    const hiveLetters = Array.from(
+      document.querySelectorAll(".hive-cell.outer text")
+    ).filter((letter) => letter.textContent != "😸");
+
+    if (hiveLetters.length) {
+      const randomIndex = getRandomInt(hiveLetters.length);
+      hiveLetters[randomIndex].textContent = "😸";
+    }
   }
 });
 
@@ -130,19 +140,6 @@ function captureNytMessage(mutationRecords, mutationObserver) {
         chrome.runtime.sendMessage({
           error: messageBox.innerText,
         });
-
-        // Remove a letter. Shame.
-        const hiveLetters = Array.from(
-          document.querySelectorAll(".hive-cell.outer text")
-        ).filter((letter) => letter.textContent != "😸");
-
-        if (hiveLetters.length) {
-          const randomIndex = getRandomInt(hiveLetters.length);
-          hiveLetters[randomIndex].textContent = "😸";
-        } else {
-          alert("Game over: you have been mauled by a Beanbag.");
-          document.querySelector("body").remove();
-        }
       }
     }
   });
