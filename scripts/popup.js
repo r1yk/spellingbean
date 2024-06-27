@@ -1,5 +1,5 @@
 function rankNameToId(rankName) {
-  return rankName.toLowerCase().replace(" ", "-");
+  return `rank-${rankName.toLowerCase().replace(" ", "-")}`;
 }
 
 const rankNames = [
@@ -60,12 +60,12 @@ gearIcon.addEventListener("click", async (event) => {
   }
 });
 
-const ranksForm = document.getElementById("rank-names-form");
+const settingsForm = document.getElementById("settings-form");
 
-ranksForm.addEventListener("submit", async (event) => {
+settingsForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const formData = new FormData(ranksForm);
+  const formData = new FormData(settingsForm);
   const rankFormData = {};
   formData.entries().forEach((entry) => (rankFormData[entry[0]] = entry[1]));
 
