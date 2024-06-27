@@ -5,7 +5,7 @@ function injectScript(file_path, tag) {
   controls = document.querySelector(".sb-controls");
 
   beanbagIcon = document.createElement("img");
-  beanbagIcon.setAttribute("src", chrome.runtime.getURL("bean.png"));
+  beanbagIcon.setAttribute("src", chrome.runtime.getURL("public/bean.png"));
   beanbagIcon.setAttribute("height", 100);
   beanbagIcon.setAttribute("width", 100);
   beanbagIcon.setAttribute("style", "cursor: pointer");

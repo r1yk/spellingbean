@@ -5,17 +5,18 @@
   "version": "1.0",
   "action": {
     "default_popup": "pages/popup.html",
-    "default_icon": "bean.png"
+    "default_icon": "public/bean.png"
   },
   "background": {
     "service_worker": "scripts/service-worker.js"
   },
-  "permissions": [
-    "sidePanel",
-    "storage",
-    "tabs",
-    "webRequest"
-  ],
+  "permissions": ["sidePanel", "storage", "tabs", "webRequest"],
+  "icons": {
+    "16": "public/bean-16.png",
+    "32": "public/bean-32.png",
+    "48": "public/bean-48.png",
+    "128": "public/bean-128.png"
+  },
   "host_permissions": ["https://www.nytimes.com/puzzles/*"],
   "content_scripts": [
     {
@@ -26,7 +27,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["bean.png"],
+      "resources": ["public/bean.png"],
       "matches": ["https://www.nytimes.com/*"]
     },
     {
