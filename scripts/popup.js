@@ -20,9 +20,11 @@ gearIcon.addEventListener("click", async (event) => {
   settingsContainer.classList.toggle("hidden");
 
   if (!settingsContainer.classList.contains("hidden")) {
-    const { spellingBeanRankNames } = await chrome.storage.local.get({
-      spellingBeanRankNames: {},
-    });
+    const { spellingBeanRankNames, spellingBeanEvilMode } =
+      await chrome.storage.local.get({
+        spellingBeanRankNames: {},
+        spellingBeanEvilMode: false,
+      });
     const editableRows = document.querySelector("#editable-ranks");
     const ranks = [];
 
@@ -57,6 +59,9 @@ gearIcon.addEventListener("click", async (event) => {
         rankNameInput.setAttribute("value", customRankName);
       }
     });
+
+    const evilModeInput = document.querySelector("input#evil-mode");
+    evilModeInput.checked = spellingBeanEvilMode;
   }
 });
 
@@ -66,12 +71,18 @@ settingsForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const formData = new FormData(settingsForm);
-  const rankFormData = {};
-  formData.entries().forEach((entry) => (rankFormData[entry[0]] = entry[1]));
+
+  const rankNames = {};
+  formData
+    .entries()
+    .filter((entry) => entry[0].startsWith("rank-"))
+    .forEach((entry) => (rankNames[entry[0]] = entry[1]));
 
   await chrome.storage.local.set({
-    spellingBeanRankNames: rankFormData,
+    spellingBeanRankNames: rankNames,
+    spellingBeanEvilMode: formData.get("evil-mode") === "on",
   });
+
   await chrome.storage.session.set({
     spellingBeanCustomRank: null,
   });
