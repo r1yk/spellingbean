@@ -3,7 +3,7 @@ function getCurrentRankName() {
     '.sb-progress-rank[data-testid="sb-progress-rank"]'
   );
   if (nytElement) {
-    return nytElement.innerText.toLowerCase().replace(" ", "-");
+    return nytElement.innerText;
   }
   return null;
 }
