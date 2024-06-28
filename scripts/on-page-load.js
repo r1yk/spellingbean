@@ -1,5 +1,7 @@
 function getCurrentRankName() {
-  const nytElement = document.querySelector(".sb-progress-rank");
+  const nytElement = document.querySelector(
+    '.sb-progress-rank[data-testid="sb-progress-rank"]'
+  );
   if (nytElement) {
     return nytElement.innerText.toLowerCase().replace(" ", "-");
   }

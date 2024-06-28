@@ -48,18 +48,20 @@ window.addEventListener(
 
 function updateRankName(rankName, allRankNames) {
   if (rankName) {
-    const nytElement = document.querySelector(".sb-progress-rank");
+    const nytElement = document.querySelector(
+      '.sb-progress-rank[data-testid="sb-progress-rank"]'
+    );
     if (nytElement) {
       const container = nytElement.parentElement;
-      nytElement.remove();
+      // Hide the official NYT rank name, but don't delete it.
+      nytElement.setAttribute("style", "display: none;");
 
-      // Add back a lookalike element that only Spelling Bean will update
+      // Add a look-a-like element that only Spelling Bean will update
       const newElement = document.createElement("h4");
-      newElement.setAttribute(
-        "style",
-        "min-width: 5em; font-weight: 700; display: flex;align-items: center;"
+      newElement.classList.add(
+        "sb-progress-rank",
+        "spellingbean-progress-rank"
       );
-      newElement.classList.add("spellingbean-progress-rank");
       container.prepend(newElement);
     }
 

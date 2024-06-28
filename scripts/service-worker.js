@@ -99,48 +99,9 @@ chrome.storage.session.onChanged.addListener(async (changes, areaName) => {
   }
 });
 
-// Listen for state updates so that the list of submitted words is kept current
-chrome.webRequest.onBeforeRequest.addListener(
-  async (details) => {
-    const intarray = new Int8Array(details.requestBody.raw[0].bytes);
-    const utf8decoder = new TextDecoder();
-    puzzleJson = JSON.parse(utf8decoder.decode(intarray));
-
-    // Use spellingBeanPuzzleDate to make sure to ignore requests that are actually related to other puzzle dates(?) Why you do this NYT
-    const { spellingBeanPuzzleDate } = await chrome.storage.session.get({
-      spellingBeanPuzzleDate: "",
-    });
-
-    if (
-      puzzleJson.game === "spelling_bee" &&
-      puzzleJson.print_date === spellingBeanPuzzleDate
-    ) {
-      await chrome.storage.session.set({
-        spellingBeanSubmitted: puzzleJson.game_data.answers,
-        spellingBeanPoints: wordsToPoints(puzzleJson.game_data.answers),
-        spellingBeanCustomRank: await getCustomRankName(
-          puzzleJson.game_data.rank
-        ),
-      });
-    }
-  },
-  {
-    urls: ["https://www.nytimes.com/svc/games/state"],
-  },
-  ["requestBody"]
-);
-
 async function getCustomRankName(nytRankName) {
   const { spellingBeanRankNames } = await chrome.storage.local.get({
     spellingBeanRankNames: {},
   });
   return spellingBeanRankNames[nytRankName.toLowerCase().replace(" ", "-")];
-}
-
-function getCurrentRankName() {
-  const nytElement = document.querySelector(".sb-progress-rank");
-  if (nytElement?.innerText) {
-    return nytElement.innerText.toLowerCase().replace(" ", "-");
-  }
-  return null;
 }
