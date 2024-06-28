@@ -10,7 +10,7 @@
   "background": {
     "service_worker": "scripts/service-worker.js"
   },
-  "permissions": ["sidePanel", "storage", "tabs", "webRequest"],
+  "permissions": ["sidePanel", "storage"],
   "icons": {
     "16": "public/bean-16.png",
     "32": "public/bean-32.png",
