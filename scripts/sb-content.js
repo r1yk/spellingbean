@@ -9,8 +9,6 @@ function injectScript(file_path, tag) {
   node.appendChild(script);
 }
 
-injectScript(chrome.runtime.getURL("scripts/on-page-load.js"), "body");
-
 // Forward window events to the extension via `chrome.runtime.sendMessage`
 window.addEventListener(
   "message",
@@ -29,25 +27,24 @@ window.addEventListener(
   false
 );
 
+function replaceRankNameElement() {
+  const nytElement = document.querySelector(
+    '.sb-progress-rank[data-testid="sb-progress-rank"]'
+  );
+  if (nytElement) {
+    const container = nytElement.parentElement;
+    // Hide the official NYT rank name, but don't delete it.
+    nytElement.setAttribute("style", "display: none;");
+
+    // Add a look-a-like element that only Spelling Bean will update
+    const newElement = document.createElement("h4");
+    newElement.classList.add("sb-progress-rank", "spellingbean-progress-rank");
+    container.prepend(newElement);
+  }
+}
+
 function updateRankName(rankName, allRankNames) {
   if (rankName) {
-    const nytElement = document.querySelector(
-      '.sb-progress-rank[data-testid="sb-progress-rank"]'
-    );
-    if (nytElement) {
-      const container = nytElement.parentElement;
-      // Hide the official NYT rank name, but don't delete it.
-      nytElement.setAttribute("style", "display: none;");
-
-      // Add a look-a-like element that only Spelling Bean will update
-      const newElement = document.createElement("h4");
-      newElement.classList.add(
-        "sb-progress-rank",
-        "spellingbean-progress-rank"
-      );
-      container.prepend(newElement);
-    }
-
     document
       .querySelectorAll(".spellingbean-progress-rank")
       .forEach((rankElement) => (rankElement.innerText = rankName));
@@ -199,3 +196,6 @@ beanbagIcon.addEventListener("click", () => {
 if (controls) {
   controls.prepend(beanbagIcon);
 }
+
+injectScript(chrome.runtime.getURL("scripts/on-page-load.js"), "body");
+replaceRankNameElement();
