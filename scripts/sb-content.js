@@ -1,23 +1,6 @@
 let customRankNames = null;
 
 function injectScript(file_path, tag) {
-  // Add the clickable icon that will open the side panel
-  controls = document.querySelector(".sb-controls");
-
-  beanbagIcon = document.createElement("img");
-  beanbagIcon.setAttribute("src", chrome.runtime.getURL("public/bean.png"));
-  beanbagIcon.setAttribute("height", 100);
-  beanbagIcon.setAttribute("width", 100);
-  beanbagIcon.setAttribute("style", "cursor: pointer");
-
-  beanbagIcon.addEventListener("click", () => {
-    window.postMessage({ type: "TOGGLE_BEAN" });
-  });
-
-  if (controls) {
-    controls.prepend(beanbagIcon);
-  }
-
   // Inject the script that will be able to read window.gameData and post it back to the extension
   var node = document.getElementsByTagName(tag)[0];
   var script = document.createElement("script");
@@ -157,3 +140,62 @@ const messageObserver = new MutationObserver(captureNytMessage);
 messageObserver.observe(nytMessageBox, {
   attributes: true,
 });
+
+function getSubmittedAnswers() {
+  const alreadySubmittedElements = document.querySelectorAll(
+    "ul.sb-wordlist-items-pag li"
+  );
+  return Array.from(alreadySubmittedElements).map((element) =>
+    element.innerText.toLowerCase()
+  );
+}
+
+function getCurrentPointTotal() {
+  const pointElement = document.querySelector("span.sb-progress-value");
+  if (pointElement) {
+    return Number(pointElement.innerText);
+  }
+  return 0;
+}
+
+function getCurrentRankName() {
+  const nytElement = document.querySelector(
+    '.sb-progress-rank[data-testid="sb-progress-rank"]'
+  );
+  if (nytElement) {
+    return nytElement.innerText.toLowerCase().replace(" ", "-");
+  }
+  return null;
+}
+
+function sendSubmittedAnswers(mutationRecords, mutationObserver) {
+  chrome.runtime.sendMessage({
+    spellingBeanSubmitted: getSubmittedAnswers(),
+    spellingBeanPoints: getCurrentPointTotal(),
+    nytCurrentRankName: getCurrentRankName(),
+  });
+}
+
+const nytSubmittedAnswers = document.querySelector("ul.sb-wordlist-items-pag");
+const submittedAnswersObserver = new MutationObserver(sendSubmittedAnswers);
+
+submittedAnswersObserver.observe(nytSubmittedAnswers, {
+  childList: true,
+});
+
+// Add the clickable icon that will open the side panel
+controls = document.querySelector(".sb-controls");
+
+beanbagIcon = document.createElement("img");
+beanbagIcon.setAttribute("src", chrome.runtime.getURL("public/bean.png"));
+beanbagIcon.setAttribute("height", 100);
+beanbagIcon.setAttribute("width", 100);
+beanbagIcon.setAttribute("style", "cursor: pointer");
+
+beanbagIcon.addEventListener("click", () => {
+  window.postMessage({ type: "TOGGLE_BEAN" });
+});
+
+if (controls) {
+  controls.prepend(beanbagIcon);
+}

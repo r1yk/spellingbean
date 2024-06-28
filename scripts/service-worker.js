@@ -55,6 +55,8 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
       spellingBeanPoints: wordsToPoints(submitted),
       spellingBeanTotalPoints: wordsToPoints(answers),
     });
+  } else if (request.spellingBeanSubmitted) {
+    await updateSubmittedAnswers(request);
   } else if (request.error) {
     const { spellingBeanEvilMode } = await chrome.storage.local.get({
       spellingBeanEvilMode: false,
@@ -104,4 +106,12 @@ async function getCustomRankName(nytRankName) {
     spellingBeanRankNames: {},
   });
   return spellingBeanRankNames[nytRankName.toLowerCase().replace(" ", "-")];
+}
+
+async function updateSubmittedAnswers(updates) {
+  await chrome.storage.session.set({
+    spellingBeanSubmitted: updates.spellingBeanSubmitted,
+    spellingBeanPoints: updates.spellingBeanPoints,
+    spellingBeanCustomRank: await getCustomRankName(updates.nytCurrentRankName),
+  });
 }
