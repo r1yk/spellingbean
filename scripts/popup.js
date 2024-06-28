@@ -1,5 +1,5 @@
 function rankNameToId(rankName) {
-  return `rank-${rankName.toLowerCase().replace(" ", "-")}`;
+  return rankName.toLowerCase().replace(" ", "-");
 }
 
 const rankNames = [
@@ -75,7 +75,7 @@ settingsForm.addEventListener("submit", async (event) => {
   const rankNames = {};
   formData
     .entries()
-    .filter((entry) => entry[0].startsWith("rank-"))
+    .filter((entry) => entry[0] != "evil-mode")
     .forEach((entry) => (rankNames[entry[0]] = entry[1]));
 
   await chrome.storage.local.set({
